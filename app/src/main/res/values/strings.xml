@@ -1,0 +1,40 @@
+<resources>
+	<string name="app_name">waylight</string>
+	<string name="title_loginWithFacebookSDK">Login with Facebook SDK</string>
+	<string name="title_loginWithGooglePlusSDK">Login with GooglePlus SDK</string>
+
+	<string name="btn_LoginFacebook">Login in Facebook</string>
+	<string name="btn_LoginGooglePlus">Login in GooglePlus</string>
+	<string name="btn_LogoutBackendless">Logout from Backendless</string>
+
+	<string name="textView_SocialAccountInfo">Social Account Info</string>
+	<string name="textView_BackendlessUserInfo">Backendles User info</string>
+	<string name="editText_SocialAccountInfo">You should login in social network first.</string>
+	<string name="editText_fbBackendlessUserInfo">You should login as Backendles user firs.</string>
+
+	<string name="via_api">You may sign in via social networks</string>
+	<string name="signedin">Already have an account?</string>
+	<string name="sign_in_upper">SIGN IN</string>
+	<string name="todo">TODO</string>
+	<string name="sigh_up">sign up</string>
+	<string name="sign_in">Sign in</string>
+	<!-- __________ change this credentials and configure your applications __________ -->
+	<!-- You also need to set android debug key in Facebook and Google apps -->
+
+	<!-- for Facebook -->
+	<!-- https://developers.facebook.com/docs/facebook-login/android -->
+	<string name="facebook_app_id">206028750172413</string>
+	<string name="fb_login_protocol_scheme">fb206028750172413</string>
+
+	<!-- for Google -->
+	<!-- https://developers.google.com/identity/sign-in/android/start-integrating -->
+	<string name="gp_WebApp_ClientId">308381610368-744sbcv3n1aj9na2k79pivucbt4gmo30.apps.googleusercontent.com</string>
+	<string name="gp_WebApp_ClientSecret">L0jP1SF2CpnYMpePVCw8tnho</string>
+
+	<!-- for Backendless -->
+	<string name="backendless_AppId">2706C788-67F7-1948-FF02-EF3069F0AA00</string>
+	<string name="backendless_ApiKey">1D912D94-23DF-8918-FF24-2FB7E43A6C00</string>
+	<string name="backendless_ApiHost">https://api.backendless.com</string>
+	<!-- __________ end __________ -->
+
+</resources>
