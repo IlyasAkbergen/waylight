@@ -45,6 +45,9 @@
 		<activity android:name="com.backendless.examples.login_with_sdk.login_with_google_plus_sdk_activity" android:label="@string/title_loginWithGooglePlusSDK">
 
 		</activity>
+
+		<activity android:name=".form_activity"></activity>
+		<activity android:name=".results_activity"></activity>
 	</application>
 
 </manifest>

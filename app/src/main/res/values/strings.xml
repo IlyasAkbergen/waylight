@@ -28,13 +28,22 @@
 
 	<!-- for Google -->
 	<!-- https://developers.google.com/identity/sign-in/android/start-integrating -->
-	<string name="gp_WebApp_ClientId">308381610368-744sbcv3n1aj9na2k79pivucbt4gmo30.apps.googleusercontent.com</string>
+	<string name="gp_WebApp_ClientId">308381610368–744sbcv3n1aj9na2k79pivucbt4gmo30.apps.googleusercontent.com</string>
 	<string name="gp_WebApp_ClientSecret">L0jP1SF2CpnYMpePVCw8tnho</string>
 
 	<!-- for Backendless -->
 	<string name="backendless_AppId">2706C788-67F7-1948-FF02-EF3069F0AA00</string>
 	<string name="backendless_ApiKey">1D912D94-23DF-8918-FF24-2FB7E43A6C00</string>
 	<string name="backendless_ApiHost">https://api.backendless.com</string>
+    <string name="from">From</string>
+	<string name="to">To</string>
+    <string name="search">Search</string>
+    <string name="departDate">Depart Date</string>
+	<string name="returnDate">Return Date</string>
+    <string name="adult">adult</string>
+	<string name="child">child</string>
+	<string name="economClass">econom class</string>
+	<string name="businessClass">business class</string>
 	<!-- __________ end __________ -->
 
 </resources>

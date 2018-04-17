@@ -96,8 +96,8 @@ public class login_with_facebook_sdk_activity extends Activity {
 				for (Map.Entry<String, Object> entry : response.getProperties().entrySet())
 					msg += entry.getKey() + " : " + entry.getValue() + "\n";
 
-				backendlessUserInfo.setTextColor(getColor(android.R.color.black));
-				backendlessUserInfo.setText(msg);
+				Intent intent = new Intent(login_with_facebook_sdk_activity.this, form_activity.class);
+				startActivity(intent);
 
 				loginFacebookButton.setVisibility(View.INVISIBLE);
 				fbLogoutBackendlessButton.setVisibility(View.VISIBLE);

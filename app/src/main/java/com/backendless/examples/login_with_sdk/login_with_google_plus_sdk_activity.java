@@ -156,12 +156,12 @@ public class login_with_google_plus_sdk_activity extends Activity {
 				.build();
 
 		mGoogleApiClient = new GoogleApiClient.Builder(this)
-				//.enableAutoManage(this /* FragmentActivity */, this /* OnConnectionFailedListener */)
-				//.addOnConnectionFailedListener(this)
+//				.enableAutoManage(this , this /* OnConnectionFailedListener */)
+				//.addOnConnectionFailedListener((GoogleApiClient.OnConnectionFailedListener) this)
 				.addApi(Auth.CREDENTIALS_API)
 				.addApi(Auth.GOOGLE_SIGN_IN_API, gso)
-//				.addScope(new Scope(Scopes.PROFILE))
-//				.addScope(new Scope(Scopes.PLUS_ME))
+				.addScope(new Scope(Scopes.PROFILE))
+				.addScope(new Scope(Scopes.PLUS_ME))
 				.build();
 
 		loginGooglePlusButton.setOnClickListener(new View.OnClickListener() {

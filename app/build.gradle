@@ -45,6 +45,7 @@ dependencies {
     //noinspection GradleCompatible
     compile 'com.android.support:support-v4:27.1.1'
     compile 'com.android.support:support-v13:27.1.1'
+    compile 'com.mcxiaoke.volley:library:1.0.19'
 }
 
 //apply plugin: 'com.google.gms.google-services'
