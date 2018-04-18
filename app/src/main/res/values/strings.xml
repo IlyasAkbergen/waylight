@@ -44,6 +44,7 @@
 	<string name="child">child</string>
 	<string name="economClass">econom class</string>
 	<string name="businessClass">business class</string>
+    <string name="returndate">return date</string>
 	<!-- __________ end __________ -->
 
 </resources>

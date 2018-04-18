@@ -2,13 +2,20 @@ package com.backendless.examples.login_with_sdk;
 
 import android.app.Activity;
 import android.app.DatePickerDialog;
+import android.app.Dialog;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v7.widget.DividerItemDecoration;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ProgressBar;
 import android.widget.RadioButton;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -20,34 +27,75 @@ import com.android.volley.Request;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.Volley;
 
+import org.apache.http.HttpResponse;
+import org.apache.http.NameValuePair;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.json.JSONException;
+import org.json.JSONTokener;
 
+import java.io.BufferedOutputStream;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+import java.io.UnsupportedEncodingException;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 import java.util.Locale;
 
 public class form_activity extends Activity {
 
     EditText pointa, pointb;
-
-    String baseUrl = "http://localhost/waylight/public/api/tickets";
-    String url, ticketClass;
+    String baseUrl = "http://singer.kz/waylight/public/api/tickets";
+    String url, ticketClass = "";
     private int mYearD,mMonthD, mDayD, mYearR, mMonthR, mDayR;
+    RequestQueue requestQueue;
+    private List<Ticket> ticketList;
+    private RecyclerView.Adapter adapter;
+    private RecyclerView mList;
+    private LinearLayoutManager linearLayoutManager;
+    private DividerItemDecoration dividerItemDecoration;
+    private Button searchBtn;
+    ProgressBar progressBar ;
 
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_form);
         RelativeLayout lay = (RelativeLayout)findViewById(R.id.activity_form);
         lay.setBackgroundResource(R.drawable.background);
         this.pointa = (EditText) findViewById(R.id.pointa);
         this.pointb = (EditText) findViewById(R.id.pointb);
+        this.searchBtn = (Button) findViewById(R.id.searchBtn);
+        this.progressBar = (ProgressBar) findViewById(R.id.progressBar);
         final Button pickDepartDate = (Button) findViewById(R.id.departDate);
         final Button pickReturnDate = (Button) findViewById(R.id.returnDate);
         final TextView departdate = (TextView) findViewById(R.id.departdate);
+
+        mList = findViewById(R.id.main_list);
+        ticketList = new ArrayList<>();
+        adapter = new TicketAdapter(getApplicationContext(), ticketList);
+        linearLayoutManager = new LinearLayoutManager(this);
+        linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+        dividerItemDecoration = new DividerItemDecoration(mList.getContext(), linearLayoutManager.getOrientation());
+        mList.setHasFixedSize(true);
+        mList.setLayoutManager(linearLayoutManager);
+        mList.addItemDecoration(dividerItemDecoration);
+        mList.setAdapter(adapter);
+
         final TextView returndate = (TextView) findViewById(R.id.returndate);
-        RequestQueue requestQueue;
         final Calendar myCalendar = Calendar.getInstance();
         final DatePickerDialog.OnDateSetListener date = new DatePickerDialog.OnDateSetListener()
         {
@@ -66,6 +114,14 @@ public class form_activity extends Activity {
 
 
         };
+
+        searchBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                new RetrieveFeedTask().execute();
+                adapter.notifyDataSetChanged();
+            }
+        });
 
         pickDepartDate.setOnClickListener(new View.OnClickListener() {
 
@@ -144,7 +200,168 @@ public class form_activity extends Activity {
 
             }
         });
-        requestQueue = Volley.newRequestQueue(this);
+    }
+
+    class RetrieveFeedTask extends AsyncTask<Void, Void, String> {
+
+        private Exception exception;
+
+        protected void onPreExecute() {
+            progressBar.setVisibility(View.VISIBLE);
+        }
+
+        protected String doInBackground(Void... params) {
+            String data = "pointa=" + pointa.getText().toString() + "&pointb=" + pointb.getText().toString(); //data to post
+            if(ticketClass != ""){
+                data += "&class=" + ticketClass;
+            }
+            OutputStream out = null;
+            try {
+                URL url = new URL(baseUrl);// + "?pointa=" + pointa.getText().toString() + "&pointb=" + pointb.getText().toString()
+                HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
+                urlConnection.setRequestMethod("POST");
+                try {
+                    out = new BufferedOutputStream(urlConnection.getOutputStream());
+
+                    BufferedWriter writer = new BufferedWriter (new OutputStreamWriter(out, "UTF-8"));
+
+                    writer.write(data);
+
+                    writer.flush();
+
+                    writer.close();
+
+                    out.close();
+
+                    urlConnection.connect();
+                    BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(urlConnection.getInputStream()));
+                    StringBuilder stringBuilder = new StringBuilder();
+                    for (String line = null; (line = bufferedReader.readLine()) != null;) {
+                        stringBuilder.append(line).append("\n");
+                    }
+                    bufferedReader.close();
+                    //JSONTokener tokener = new JSONTokener(stringBuilder.toString());
+                    JSONObject jobject = new JSONObject(stringBuilder.toString());
+                    JSONArray finalResult = jobject.getJSONArray("data" );
+
+                    for (int i = 0; i < finalResult.length(); i++) {
+                        try {
+                            JSONObject jsonObject = finalResult.getJSONObject(i);
+                            Ticket ticket = new Ticket();
+                            ticket.setPointa(jsonObject.getString("pointa"));
+                            ticket.setPointb(jsonObject.getString("pointb"));
+                            ticket.setDepartdate(jsonObject.getString("depart"));
+                            ticket.setReturndate(jsonObject.getString("return"));
+                            ticket.setFlightClass(jsonObject.getString("class"));
+                            //                ticket.setYear(jsonObject.getInt("releaseYear"));
+
+                            ticketList.add(ticket);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                            //progressDialog.dismiss();
+                        }
+                    }
+
+                    return "";
+                }
+                finally{
+                    urlConnection.disconnect();
+                }
+            }
+            catch(Exception e) {
+                Log.e("ERROR", e.getMessage(), e);
+                return null;
+            }
+        }
+
+        protected void onPostExecute(String response) {
+            if(response == null) {
+                response = "THERE WAS AN ERROR";
+            }
+            progressBar.setVisibility(View.GONE);
+            Log.i("INFO", response);
+           // responseView.setText(response);
+            // TODO: check this.exception
+            // TODO: do something with the feed
+
+//            try {
+//                JSONObject object = (JSONObject) new JSONTokener(response).nextValue();
+//                String requestID = object.getString("requestId");
+//                int likelihood = object.getInt("likelihood");
+//                JSONArray photos = object.getJSONArray("photos");
+//                .
+//                .
+//                .
+//                .
+//            } catch (JSONException e) {
+//                e.printStackTrace();
+//            }
+        }
+    }
+
+//    private void sendRequest(){
+//        HttpClient client = new DefaultHttpClient();
+//        HttpPost post = new HttpPost(baseUrl);
+//
+//        List<NameValuePair> pairs = new ArrayList<NameValuePair>();
+//        pairs.add(new BasicNameValuePair("pointa", pointa.toString()));
+//        pairs.add(new BasicNameValuePair("pointb", pointb.toString()));
+//        try {
+//            post.setEntity(new UrlEncodedFormEntity(pairs));
+//        } catch (UnsupportedEncodingException e) {
+//            e.printStackTrace();
+//        }
+//
+//        try {
+//            HttpResponse response = client.execute(post);
+//            getTicketsList(response);
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        } catch (JSONException e) {
+//            e.printStackTrace();
+//        }
+//
+//        requestQueue = Volley.newRequestQueue(this);
+//
+//    }
+
+    private void getTicketsList(HttpResponse response) throws IOException, JSONException {
+        BufferedReader reader = new BufferedReader(new InputStreamReader(response.getEntity().getContent(), "UTF-8"));
+        StringBuilder builder = new StringBuilder();
+        for (String line = null; (line = reader.readLine()) != null;) {
+            builder.append(line).append("\n");
+        }
+        JSONTokener tokener = new JSONTokener(builder.toString());
+        JSONArray finalResult = new JSONArray(tokener);
+
+        for (int i = 0; i < finalResult.length(); i++) {
+            try {
+                JSONObject jsonObject = finalResult.getJSONObject(i);
+                Ticket ticket = new Ticket();
+                ticket.setPointa(jsonObject.getString("pointa"));
+                ticket.setPointb(jsonObject.getString("pointb"));
+                ticket.setDepartdate(jsonObject.getString("depart"));
+                ticket.setReturndate(jsonObject.getString("return"));
+                ticket.setFlightClass(jsonObject.getString("class"));
+                //                ticket.setYear(jsonObject.getInt("releaseYear"));
+
+                ticketList.add(ticket);
+            } catch (JSONException e) {
+                e.printStackTrace();
+                //progressDialog.dismiss();
+            }
+        }
+        adapter.notifyDataSetChanged();
+       // progressDialog.dismiss();
+
+//        If the JSON is actually a single line, then you can also remove the loop and builder.
+//
+//        HttpResponse response; // some response object
+//        BufferedReader reader = new BufferedReader(new InputStreamReader(response.getEntity().getContent(), "UTF-8"));
+//        String json = reader.readLine();
+//        JSONTokener tokener = new JSONTokener(json);
+//        JSONArray finalResult = new JSONArray(tokener);
+
     }
 
     public void onRadioButtonClicked(View view) {

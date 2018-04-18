@@ -1,8 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/activity_results"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="10dp"
+    android:id="@+id/activity_results">
 
-</RelativeLayout>
+    <TextView
+        android:id="@+id/Pointa"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/from"
+        android:textSize="18sp"/>
+
+    <TextView
+        android:id="@+id/Pointb"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/to"
+        android:textSize="18sp"/>
+
+    <TextView
+        android:id="@+id/Departdate"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/departDate"/>
+
+    <TextView
+        android:id="@+id/Returndate"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/returndate"/>
+
+    <TextView
+        android:id="@+id/textclass"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="class"/>
+</LinearLayout>

@@ -3,6 +3,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 
@@ -11,6 +12,7 @@ import com.backendless.Backendless;
 public class choose_social_network_activity extends Activity {
 	private ImageButton login_with_facebook_sdk;
 	private ImageButton login_with_google_plus_sdk;
+	private Button signin;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -28,6 +30,7 @@ public class choose_social_network_activity extends Activity {
 	private void initUI() {
 		login_with_facebook_sdk = (ImageButton) findViewById(R.id.button_loginWithFacebookSDK);
 		login_with_google_plus_sdk = (ImageButton) findViewById(R.id.button_loginWithGooglePlusSDK);
+		signin = (Button) findViewById(R.id.signInBtn);
 	}
 
 	private void initUIBehavior() {
@@ -43,6 +46,14 @@ public class choose_social_network_activity extends Activity {
 			@Override
 			public void onClick(View v) {
 				Intent intent = new Intent(choose_social_network_activity.this, login_with_google_plus_sdk_activity.class);
+				startActivity(intent);
+			}
+		});
+
+		signin.setOnClickListener(new View.OnClickListener(){
+			@Override
+			public void onClick(View v) {
+				Intent intent = new Intent(choose_social_network_activity.this, form_activity.class);
 				startActivity(intent);
 			}
 		});
