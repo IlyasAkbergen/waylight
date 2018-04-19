@@ -34,7 +34,7 @@ public class TicketAdapter extends RecyclerView.Adapter<TicketAdapter.ViewHolder
         holder.textDepartdate.setText("Depart: " + String.valueOf(ticket.getDepartdate()));
         holder.textReturndate.setText("Return: " + String.valueOf(ticket.getReturndate()));
         holder.textClass.setText(ticket.getFlightClass() + " class");
-
+        holder.textPrice.setText("Price: " + ticket.getPrice());
     }
 
     @Override
@@ -43,7 +43,7 @@ public class TicketAdapter extends RecyclerView.Adapter<TicketAdapter.ViewHolder
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        public TextView textPointa, textPointb, textDepartdate, textReturndate, textClass;
+        public TextView textPointa, textPointb, textDepartdate, textReturndate, textClass, textPrice;
 
         public ViewHolder(View itemView) {
             super(itemView);
@@ -53,6 +53,7 @@ public class TicketAdapter extends RecyclerView.Adapter<TicketAdapter.ViewHolder
             textDepartdate = itemView.findViewById(R.id.Departdate);
             textReturndate = itemView.findViewById(R.id.Returndate);
             textClass = itemView.findViewById(R.id.textclass);
+            textPrice = itemView.findViewById(R.id.textprice);
         }
     }
 

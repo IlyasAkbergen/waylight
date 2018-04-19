@@ -52,7 +52,7 @@
 		</activity>
 		<!-- end For Facebook login -->
 
-		<activity android:name="com.backendless.examples.login_with_sdk.choose_social_network_activity">
+		<activity android:name="com.backendless.examples.login_with_sdk.choose_social_network_activity" android:label="@string/waylight">
 			<intent-filter>
 				<action android:name="android.intent.action.MAIN"/>
 				<category android:name="android.intent.category.LAUNCHER"/>

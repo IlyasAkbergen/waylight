@@ -38,7 +38,6 @@ public class form_activity extends Activity {
         final Button pickDepartDate = (Button) findViewById(R.id.departDate);
         final Button pickReturnDate = (Button) findViewById(R.id.returnDate);
         final TextView departdate = (TextView) findViewById(R.id.departdate);
-
         final TextView returndate = (TextView) findViewById(R.id.returndate);
         final Calendar myCalendar = Calendar.getInstance();
         final DatePickerDialog.OnDateSetListener date = new DatePickerDialog.OnDateSetListener()
@@ -51,8 +50,8 @@ public class form_activity extends Activity {
                 myCalendar.set(Calendar.MONTH, monthOfYear);
                 myCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
                 // myCalendar.add(Calendar.DATE, 0);
-                String myFormat = "yyyy-MM-dd hh:mm:ss"; //In which you need put here
-                SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
+                String myFormat = "yyyy-MM-dd HH:mm:ss"; //In which you need put here
+                SimpleDateFormat sdf = new SimpleDateFormat(myFormat);
                 departdate.setText(sdf.format(myCalendar.getTime()));
             }
 
@@ -66,6 +65,16 @@ public class form_activity extends Activity {
                 if(ticketClass != ""){
                     data += "&class=" + ticketClass;
                 }
+
+                if(departdate.getText().toString().equals("")){
+                    data += "&depart=" + departdate.getText().toString();
+                }
+
+
+                if(returndate.getText().toString().equals("")){
+                    data += "&return=" + returndate.getText().toString();
+                }
+
                 Intent intent = new Intent(getBaseContext(), results_activity.class);
                 intent.putExtra("data", data);
                 startActivity(intent);
@@ -100,8 +109,8 @@ public class form_activity extends Activity {
                                 if (dayOfMonth < mDayD && year == mYearD && monthOfYear == mMonthD)
                                     view.updateDate(mYearD,mMonthD,mDayD);
 
-                                departdate.setText(dayOfMonth + "-"
-                                        + (monthOfYear + 1) + "-" + year);
+                                departdate.setText(year + "-"
+                                        + (monthOfYear + 1) + "-" + dayOfMonth + " 00:00:00");
 
                             }
                         }, mYearD, mMonthD, mDayD);
@@ -139,8 +148,8 @@ public class form_activity extends Activity {
                                 if (dayOfMonth < mDayR && year == mYearR && monthOfYear == mMonthR)
                                     view.updateDate(mYearR,mMonthR,mDayR);
 
-                                returndate.setText(dayOfMonth + "-"
-                                        + (monthOfYear + 1) + "-" + year);
+                                returndate.setText(year + "-"
+                                        + (monthOfYear + 1) + "-" + dayOfMonth + " 00:00:00");
 
                             }
                         }, mYearR, mMonthR, mDayR);

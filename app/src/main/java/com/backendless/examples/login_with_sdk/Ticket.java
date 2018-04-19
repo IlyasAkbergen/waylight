@@ -2,10 +2,11 @@ package com.backendless.examples.login_with_sdk;
 
 public class Ticket {
     public String pointa, pointb, flightClass, departdate, returndate;
+    public int price;
 
     public Ticket(){ }
 
-    public Ticket(String pointa, String pointb, String flightClass, String departdate, String returndate){
+    public Ticket(String pointa, String pointb, String flightClass, String departdate, String returndate, int price){
         this.pointa = pointa;
         this.pointb = pointb;
         if(flightClass.equals(""))
@@ -60,4 +61,8 @@ public class Ticket {
     public void setReturndate(String returndate){
         this.returndate = returndate;
     }
+
+    public int getPrice(){ return price;}
+    public void setPrice(int price){ this.price = price;}
+
 }

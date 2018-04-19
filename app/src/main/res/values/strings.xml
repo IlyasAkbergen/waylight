@@ -1,7 +1,7 @@
 <resources>
-	<string name="app_name">LoginWithSocialNetworkSDK</string>
-	<string name="title_loginWithFacebookSDK">Login with Facebook SDK</string>
-	<string name="title_loginWithGooglePlusSDK">Login with GooglePlus SDK</string>
+	<string name="app_name">WayLight</string>
+	<string name="title_loginWithFacebookSDK">Login with Facebook</string>
+	<string name="title_loginWithGooglePlusSDK">Login with GooglePlus</string>
 
 	<string name="btn_LoginFacebook">Login in Facebook</string>
 	<string name="btn_LoginGooglePlus">Login in GooglePlus</string>
@@ -89,4 +89,5 @@
 	<string name="loading_empty">Loading</string>
 	<string name="loading_register">Sending registration request</string>
 	<string name="loading_login">Logging in</string>
+    <string name="waylight">WayLight</string>
 </resources>

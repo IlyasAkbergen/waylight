@@ -10,29 +10,16 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
-import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
-import android.widget.RelativeLayout;
-
-import com.android.volley.RequestQueue;
-import com.android.volley.VolleyError;
-import com.android.volley.Response;
-import com.android.volley.Request;
-import com.android.volley.toolbox.JsonArrayRequest;
-import com.android.volley.toolbox.Volley;
-
-import org.apache.http.HttpResponse;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.json.JSONException;
-import org.json.JSONTokener;
 
 import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
-import java.io.IOException;
+
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
@@ -61,7 +48,7 @@ public class results_activity extends Activity{
         ticketList = new ArrayList<>();
         adapter = new TicketAdapter(getApplicationContext(), ticketList);
         linearLayoutManager = new LinearLayoutManager(this);
-        linearLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
+        linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         dividerItemDecoration = new DividerItemDecoration(mList.getContext(), linearLayoutManager.getOrientation());
         this.progressBar = (ProgressBar) findViewById(R.id.progressBar);
         mList.setHasFixedSize(true);
@@ -120,6 +107,7 @@ public class results_activity extends Activity{
                             ticket.setDepartdate(jsonObject.getString("depart"));
                             ticket.setReturndate(jsonObject.getString("return"));
                             ticket.setFlightClass(jsonObject.getString("class"));
+                            ticket.setPrice(jsonObject.getInt("price"));
                             //                ticket.setYear(jsonObject.getInt("releaseYear"));
 
                             ticketList.add(ticket);
