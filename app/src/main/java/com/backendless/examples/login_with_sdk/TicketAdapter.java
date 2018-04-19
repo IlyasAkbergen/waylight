@@ -29,11 +29,11 @@ public class TicketAdapter extends RecyclerView.Adapter<TicketAdapter.ViewHolder
     public void onBindViewHolder(ViewHolder holder, int position) {
         Ticket ticket = list.get(position);
 
-        holder.textPointa.setText(ticket.getPointa());
-        holder.textPointb.setText(ticket.getPointb());
-        holder.textDepartdate.setText(String.valueOf(ticket.getDepartdate()));
-        holder.textReturndate.setText(String.valueOf(ticket.getReturndate()));
-        holder.textClass.setText(ticket.getFlightClass());
+        holder.textPointa.setText("From: " + ticket.getPointa());
+        holder.textPointb.setText("To: " + ticket.getPointb());
+        holder.textDepartdate.setText("Depart: " + String.valueOf(ticket.getDepartdate()));
+        holder.textReturndate.setText("Return: " + String.valueOf(ticket.getReturndate()));
+        holder.textClass.setText(ticket.getFlightClass() + " class");
 
     }
 

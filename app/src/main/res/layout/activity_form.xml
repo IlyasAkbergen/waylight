@@ -6,12 +6,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/main_list"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-    </android.support.v7.widget.RecyclerView>
-
     <EditText
         android:id="@+id/pointa"
         android:layout_width="355dp"
@@ -83,14 +77,6 @@
         android:text="@string/returnDate"
         android:background="@drawable/dark"
         android:textColor="@color/sky"/>
-
-    <ProgressBar
-        android:id="@+id/progressBar"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:indeterminate="true"
-        android:layout_centerHorizontal="true"
-        android:visibility="gone" />
 
     <Button
         android:id="@+id/searchBtn"

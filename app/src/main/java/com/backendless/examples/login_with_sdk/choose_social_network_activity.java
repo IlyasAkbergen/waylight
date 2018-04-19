@@ -8,12 +8,15 @@ import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 
 import com.backendless.Backendless;
+import com.backendless.registration.login_activity;
+import com.backendless.registration.registration_activity;
 
 public class choose_social_network_activity extends Activity {
 	private ImageButton login_with_facebook_sdk;
 	private ImageButton login_with_google_plus_sdk;
-	private Button signin;
-
+	private Button search;
+	private Button login;
+	private Button registration;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -30,7 +33,9 @@ public class choose_social_network_activity extends Activity {
 	private void initUI() {
 		login_with_facebook_sdk = (ImageButton) findViewById(R.id.button_loginWithFacebookSDK);
 		login_with_google_plus_sdk = (ImageButton) findViewById(R.id.button_loginWithGooglePlusSDK);
-		signin = (Button) findViewById(R.id.signInBtn);
+		search = (Button) findViewById(R.id.search);
+		login = (Button) findViewById(R.id.signInBtn);
+		registration = (Button) findViewById(R.id.signUpBtn);
 	}
 
 	private void initUIBehavior() {
@@ -50,12 +55,27 @@ public class choose_social_network_activity extends Activity {
 			}
 		});
 
-		signin.setOnClickListener(new View.OnClickListener(){
+		search.setOnClickListener(new View.OnClickListener(){
 			@Override
 			public void onClick(View v) {
 				Intent intent = new Intent(choose_social_network_activity.this, form_activity.class);
 				startActivity(intent);
 			}
 		});
+		registration.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				Intent intent = new Intent(choose_social_network_activity.this, registration_activity.class);
+				startActivity(intent);
+			}
+		});
+		login.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				Intent intent = new Intent(choose_social_network_activity.this, login_activity.class);
+				startActivity(intent);
+			}
+		});
+
 	}
 }

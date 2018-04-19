@@ -3,6 +3,7 @@
 		  package="com.backendless.examples.login_with_sdk">
 
 	<uses-permission android:name="android.permission.INTERNET"/>
+	<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
 	<application
 			android:allowBackup="true"
@@ -10,6 +11,26 @@
 			android:label="@string/app_name"
 			android:supportsRtl="true"
 			android:theme="@style/AppTheme">
+		
+		<!--For registration -->
+		<activity
+			android:name="com.backendless.registration.registration_activity"
+			android:label="@string/activity_registration"
+			android:screenOrientation="portrait">
+		</activity>
+
+		<service android:name="com.backendless.AndroidService" />
+
+
+		<!--for login-->
+
+		        <activity
+            android:name="com.backendless.registration.login_activity"
+            android:label="@string/activity_login"
+            android:screenOrientation="portrait">
+
+        </activity>
+
 
 		<!-- For Facebook login -->
 		<meta-data android:name="com.facebook.sdk.ApplicationId"
