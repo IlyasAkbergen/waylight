@@ -67,18 +67,21 @@
             android:layout_gravity="end"/>
     </LinearLayout>
 
-    <LinearLayout android:orientation="horizontal" android:id="@+id/row3"
+    <LinearLayout
+        android:id="@+id/row3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:background="#85ffffff"
-        android:padding="10dp"
-                android:layout_height="wrap_content"
-                android:layout_width="match_parent">
+        android:orientation="horizontal"
+        android:padding="10dp">
+
         <TextView
             android:id="@+id/textclass"
             android:layout_width="184dp"
             android:layout_height="wrap_content"
+            android:layout_gravity="start"
             android:textColor="@color/dark"
-            android:textStyle="bold"
-            android:layout_gravity="start"/>
+            android:textStyle="bold" />
 
         <TextView
             android:id="@+id/textprice"
@@ -88,4 +91,26 @@
             android:textColor="@color/dark"
             android:textStyle="bold" />
     </LinearLayout>
+
+    <TextView
+        android:id="@+id/tvSave"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:text="@string/no_result"
+        android:visibility="gone"
+        >
+
+    </TextView>
+
+    <Button
+        android:visibility="gone"
+        android:id="@+id/saveBtn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/rounded_dark"
+        android:text="Save this request and monitor results"
+        android:textColor="@color/sky">
+
+    </Button>
 </LinearLayout>

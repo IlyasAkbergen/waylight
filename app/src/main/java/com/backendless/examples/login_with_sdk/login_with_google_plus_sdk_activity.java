@@ -8,7 +8,7 @@ import android.support.annotation.NonNull;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
+
 import com.backendless.Backendless;
 import com.backendless.BackendlessUser;
 import com.backendless.async.callback.AsyncCallback;
@@ -35,8 +35,6 @@ public class login_with_google_plus_sdk_activity extends Activity {
 
 	private SignInButton loginGooglePlusButton;
 	private Button gpLogoutBackendlessButton;
-	private EditText socialAccountInfo;
-	private EditText backendlessUserInfo;
 
 	private final int RC_SIGN_IN = 112233; // arbitrary number
 	private GoogleApiClient mGoogleApiClient;
@@ -56,10 +54,6 @@ public class login_with_google_plus_sdk_activity extends Activity {
 
 	private void initUI() {
 		loginGooglePlusButton = (SignInButton) findViewById(R.id.button_googlePlusLogin);
-		gpLogoutBackendlessButton = (Button) findViewById(R.id.button_gpBackendlessLogout);
-
-		socialAccountInfo = (EditText) findViewById(R.id.editText_gpSocialAccountInfo);
-		backendlessUserInfo = (EditText) findViewById(R.id.editText_gpBackendlessUserInfo);
 	}
 
 	private void initUIBehaviour() {
@@ -72,23 +66,11 @@ public class login_with_google_plus_sdk_activity extends Activity {
 				handleSignInResult((GoogleSignInResult) pendingResult.get());
 		}
 
-		gpLogoutBackendlessButton.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				if (isLoggedInBackendless)
-					logoutFromBackendless();
-
-				if (isLoggedInGoogle)
-					logoutFromGoogle();
-			}
-		});
 
 		BackendlessUser user = Backendless.UserService.CurrentUser();
 		if (user != null)
 		{
 			isLoggedInBackendless = true;
-			backendlessUserInfo.setTextColor(getColor(android.R.color.black));
-			backendlessUserInfo.setText("Current user: " + user.getEmail());
 
 			loginGooglePlusButton.setVisibility(View.INVISIBLE);
 			gpLogoutBackendlessButton.setVisibility(View.VISIBLE);
@@ -110,17 +92,12 @@ public class login_with_google_plus_sdk_activity extends Activity {
 				for (Map.Entry<String, Object> entry : response.getProperties().entrySet())
 					msg += entry.getKey() + " : " + entry.getValue() + "\n";
 
-				backendlessUserInfo.setTextColor(getColor(android.R.color.black));
-				backendlessUserInfo.setText(msg);
-
 				loginGooglePlusButton.setVisibility(View.INVISIBLE);
 				gpLogoutBackendlessButton.setVisibility(View.VISIBLE);
 			}
 
 			@Override
 			public void handleFault(BackendlessFault fault) {
-				backendlessUserInfo.setTextColor(getColor(android.R.color.holo_red_dark));
-				backendlessUserInfo.setText(fault.toString());
 			}
 		});
 	}
@@ -130,17 +107,12 @@ public class login_with_google_plus_sdk_activity extends Activity {
 			@Override
 			public void handleResponse(Void response) {
 				isLoggedInBackendless = false;
-				backendlessUserInfo.setTextColor(getColor(android.R.color.black));
-				backendlessUserInfo.setText("");
-
 				gpLogoutBackendlessButton.setVisibility(View.INVISIBLE);
 				loginGooglePlusButton.setVisibility(View.VISIBLE);
 			}
 
 			@Override
 			public void handleFault(BackendlessFault fault) {
-				backendlessUserInfo.setTextColor(getColor(android.R.color.holo_red_dark));
-				backendlessUserInfo.setText(fault.toString());
 			}
 		});
 	}
@@ -213,21 +185,11 @@ public class login_with_google_plus_sdk_activity extends Activity {
 			t.setDaemon(true);
 			t.start();
 
-			String msg = "Id: " + result.getSignInAccount().getId() + "\n"
-					+ "IdToken: " + result.getSignInAccount().getIdToken() + "\n"
-					+ "DisplayName: " + result.getSignInAccount().getDisplayName() + "\n"
-					+ "Email: " + result.getSignInAccount().getEmail() + "\n"
-					+ "ServerAuthCode: " + result.getSignInAccount().getServerAuthCode();
-			socialAccountInfo.setTextColor(getColor(android.R.color.black));
-			socialAccountInfo.setText(msg);
-
 			//updateUI(true);
 		} else {
 			// Signed out, show unauthenticated UI.
 			gpAccessToken = null;
 			String msg = "Unsuccessful login.\nStatus message:\n" + result.getStatus().getStatusMessage();
-			socialAccountInfo.setTextColor(getColor(android.R.color.holo_red_dark));
-			socialAccountInfo.setText(msg);
 			isLoggedInGoogle = false;
 			//updateUI(false);
 		}
@@ -249,21 +211,14 @@ public class login_with_google_plus_sdk_activity extends Activity {
 				.execute();
 		} catch (Exception e) {
 			Log.e("LoginWithGooglePlus", e.getMessage(), e);
-			String msg = socialAccountInfo.getText() + "\n"
-					+ e.getMessage();
-			socialAccountInfo.setText(msg);
-			socialAccountInfo.setTextColor(getColor(android.R.color.holo_red_dark));
 			return null;
 		}
 
 		gpAccessToken = tokenResponse.getAccessToken();
-		final String msg = socialAccountInfo.getText() + "\n"
-				+ "AccessToken: " + gpAccessToken;
 
 		this.runOnUiThread(new Runnable() {
 			@Override
 			public void run() {
-				socialAccountInfo.setText(msg);
 			}
 		});
 		return gpAccessToken;
@@ -277,8 +232,6 @@ public class login_with_google_plus_sdk_activity extends Activity {
 				mGoogleApiClient.blockingConnect(10, TimeUnit.SECONDS);
 				if (!mGoogleApiClient.isConnected())
 				{
-					socialAccountInfo.setTextColor(getColor(android.R.color.holo_red_dark));
-					socialAccountInfo.setText("Can not sign out from Google plus. No connection. Try later.");
 					return;
 				}
 
@@ -294,8 +247,6 @@ public class login_with_google_plus_sdk_activity extends Activity {
 							loginGooglePlusButton.setVisibility(View.VISIBLE);
 
 							gpAccessToken = null;
-							socialAccountInfo.setTextColor(getColor(android.R.color.black));
-							socialAccountInfo.setText("");
 						}
 					});
 			}

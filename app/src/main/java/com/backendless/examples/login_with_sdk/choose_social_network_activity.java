@@ -1,6 +1,7 @@
 package com.backendless.examples.login_with_sdk;
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -17,6 +18,7 @@ public class choose_social_network_activity extends Activity {
 	private Button search;
 	private Button login;
 	private Button registration;
+	SharedPreferences sPref;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -25,6 +27,10 @@ public class choose_social_network_activity extends Activity {
 		lay.setBackgroundResource(R.drawable.background);
 		initUI();
 		initUIBehavior();
+		sPref = getPreferences(MODE_PRIVATE);
+		SharedPreferences.Editor ed = sPref.edit();
+		ed.putString(getString(R.string.SAVED_REQUESTS), "");
+		ed.commit();
 
 		Backendless.initApp(getApplicationContext(), getString(R.string.backendless_AppId), getString(R.string.backendless_ApiKey));
 		Backendless.setUrl(getString(R.string.backendless_ApiHost));

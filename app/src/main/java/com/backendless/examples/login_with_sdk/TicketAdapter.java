@@ -1,6 +1,7 @@
 package com.backendless.examples.login_with_sdk;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -28,7 +29,6 @@ public class TicketAdapter extends RecyclerView.Adapter<TicketAdapter.ViewHolder
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         Ticket ticket = list.get(position);
-
         holder.textPointa.setText("From: " + ticket.getPointa());
         holder.textPointb.setText("To: " + ticket.getPointb());
         holder.textDepartdate.setText("Depart: " + String.valueOf(ticket.getDepartdate()));
@@ -47,7 +47,6 @@ public class TicketAdapter extends RecyclerView.Adapter<TicketAdapter.ViewHolder
 
         public ViewHolder(View itemView) {
             super(itemView);
-
             textPointa = itemView.findViewById(R.id.Pointa);
             textPointb = itemView.findViewById(R.id.Pointb);
             textDepartdate = itemView.findViewById(R.id.Departdate);

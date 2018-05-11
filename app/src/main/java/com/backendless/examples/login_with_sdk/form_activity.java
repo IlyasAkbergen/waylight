@@ -11,11 +11,17 @@ import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.volley.RequestQueue;
+import com.backendless.Backendless;
+import com.backendless.async.callback.AsyncCallback;
+import com.backendless.exceptions.BackendlessFault;
+import com.backendless.persistence.DataQueryBuilder;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.List;
 import java.util.Locale;
 
 public class form_activity extends Activity {
@@ -25,7 +31,8 @@ public class form_activity extends Activity {
     private int mYearD,mMonthD, mDayD, mYearR, mMonthR, mDayR;
     RequestQueue requestQueue;
     private Button searchBtn;
-
+    private Button logout;
+    private Button goToSavedRequests;
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
@@ -35,11 +42,19 @@ public class form_activity extends Activity {
         this.pointa = (EditText) findViewById(R.id.pointa);
         this.pointb = (EditText) findViewById(R.id.pointb);
         this.searchBtn = (Button) findViewById(R.id.searchBtn);
+        this.logout = (Button) findViewById(R.id.logout);
+        this.goToSavedRequests = (Button) findViewById(R.id.go_to_saved_requests);
         final Button pickDepartDate = (Button) findViewById(R.id.departDate);
         final Button pickReturnDate = (Button) findViewById(R.id.returnDate);
         final TextView departdate = (TextView) findViewById(R.id.departdate);
         final TextView returndate = (TextView) findViewById(R.id.returndate);
         final Calendar myCalendar = Calendar.getInstance();
+
+        if(Backendless.UserService.loggedInUser() == ""){
+            logout.setVisibility(View.GONE);
+            goToSavedRequests.setVisibility(View.GONE);
+        }
+
         final DatePickerDialog.OnDateSetListener date = new DatePickerDialog.OnDateSetListener()
         {
             @Override
@@ -57,6 +72,17 @@ public class form_activity extends Activity {
 
 
         };
+
+        goToSavedRequests.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Intent intent = new Intent(getBaseContext(), saved_requests.class);
+                intent.putExtra("ownerId", Backendless.UserService.loggedInUser());
+                startActivity(intent);
+
+            }
+        });
 
         searchBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -77,7 +103,29 @@ public class form_activity extends Activity {
 
                 Intent intent = new Intent(getBaseContext(), results_activity.class);
                 intent.putExtra("data", data);
+                intent.putExtra("pointa", pointa.getText().toString());
+                intent.putExtra("pointb", pointb.getText().toString());
+                intent.putExtra("user_id", Backendless.UserService.loggedInUser());
+
                 startActivity(intent);
+            }
+        });
+
+        logout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Backendless.UserService.logout(new AsyncCallback<Void>() {
+                    @Override
+                    public void handleResponse(Void response) {
+                        Intent intent = new Intent(getBaseContext(), main_activity.class);
+                        startActivity(intent);
+                    }
+
+                    @Override
+                    public void handleFault(BackendlessFault fault) {
+                        Toast.makeText(getBaseContext(), "Logout Error", Toast.LENGTH_SHORT).show();
+                    }
+                });
             }
         });
 

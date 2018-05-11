@@ -34,7 +34,7 @@ public class results_activity extends Activity{
     RecyclerView mList;
     private LinearLayoutManager linearLayoutManager;
     private DividerItemDecoration dividerItemDecoration;
-    String data;
+    String data, pointa, pointb, user_id;
     ProgressBar progressBar ;
     String baseUrl = "http://singer.kz/waylight/public/api/tickets";
 
@@ -56,6 +56,9 @@ public class results_activity extends Activity{
         mList.addItemDecoration(dividerItemDecoration);
         mList.setAdapter(adapter);
         data = getIntent().getStringExtra("data");
+        pointa = getIntent().getStringExtra("pointa");
+        pointb = getIntent().getStringExtra("pointb");
+        user_id = getIntent().getStringExtra("user_id");
         System.out.println("here" + data);
         new RetrieveFeedTask().execute();
 
@@ -108,13 +111,21 @@ public class results_activity extends Activity{
                             ticket.setReturndate(jsonObject.getString("return"));
                             ticket.setFlightClass(jsonObject.getString("class"));
                             ticket.setPrice(jsonObject.getInt("price"));
-                            //                ticket.setYear(jsonObject.getInt("releaseYear"));
 
                             ticketList.add(ticket);
                         } catch (JSONException e) {
                             e.printStackTrace();
                             //progressDialog.dismiss();
                         }
+                    }
+
+                    if(finalResult.length() == 0){
+                        Intent intent = new Intent(getBaseContext(), save_request_activity.class);
+                        intent.putExtra("data", data);
+                        intent.putExtra("pointa", pointa);
+                        intent.putExtra("pointb", pointb);
+                        intent.putExtra("user_id", user_id);
+                        startActivity(intent);
                     }
 
                     return "";

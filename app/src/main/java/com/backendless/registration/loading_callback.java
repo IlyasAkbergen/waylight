@@ -1,6 +1,5 @@
 package com.backendless.registration;
 
-
 import android.app.ProgressDialog;
 import android.content.Context;
 import com.backendless.async.callback.AsyncCallback;

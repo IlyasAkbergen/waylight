@@ -16,20 +16,22 @@
 		<activity
 			android:name="com.backendless.registration.registration_activity"
 			android:label="@string/activity_registration"
-			android:screenOrientation="portrait">
+			android:screenOrientation="portrait"
+			android:noHistory="true">
 		</activity>
 
-		<service android:name="com.backendless.AndroidService" />
+		<!--<service android:name="com.backendless.AndroidService" />-->
 
 
 		<!--for login-->
 
-		        <activity
-            android:name="com.backendless.registration.login_activity"
-            android:label="@string/activity_login"
-            android:screenOrientation="portrait">
+		<activity
+			android:name="com.backendless.registration.login_activity"
+			android:label="@string/activity_login"
+			android:screenOrientation="portrait"
+			android:noHistory="true">
 
-        </activity>
+		</activity>
 
 
 		<!-- For Facebook login -->
@@ -53,22 +55,35 @@
 		<!-- end For Facebook login -->
 
 		<activity android:name="com.backendless.examples.login_with_sdk.choose_social_network_activity" android:label="@string/waylight">
+
+		</activity>
+		<activity android:name=".main_activity" android:noHistory="true">
 			<intent-filter>
 				<action android:name="android.intent.action.MAIN"/>
 				<category android:name="android.intent.category.LAUNCHER"/>
 			</intent-filter>
 		</activity>
-
-		<activity android:name="com.backendless.examples.login_with_sdk.login_with_facebook_sdk_activity" android:label="@string/title_loginWithFacebookSDK">
+		<activity android:name="com.backendless.examples.login_with_sdk.login_with_facebook_sdk_activity" android:noHistory="true" android:label="@string/title_loginWithFacebookSDK">
 
 		</activity>
 
-		<activity android:name="com.backendless.examples.login_with_sdk.login_with_google_plus_sdk_activity" android:label="@string/title_loginWithGooglePlusSDK">
+		<activity android:name="com.backendless.examples.login_with_sdk.login_with_google_plus_sdk_activity" android:noHistory="true" android:label="@string/title_loginWithGooglePlusSDK">
 
 		</activity>
 
 		<activity android:name=".form_activity" android:windowSoftInputMode="adjustPan"></activity>
-		<activity android:name=".results_activity" android:windowSoftInputMode="adjustPan"></activity>
+		<activity android:name=".results_activity" android:windowSoftInputMode="adjustPan" android:noHistory="true"></activity>
+		<activity android:name=".save_request_activity"></activity>
+		<activity android:name=".saved_requests"></activity>
+
+		<receiver
+			android:name="com.backendless.service.MyAlarmReceiver"
+			android:process=":remote" >
+		</receiver>
+
+		<service
+			android:name="com.backendless.service.AlarmService"
+			android:exported="false" />
 	</application>
 
 </manifest>
