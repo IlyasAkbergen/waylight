@@ -4,11 +4,12 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.util.Log;
 import android.widget.RelativeLayout;
+import android.widget.Toast;
 
 import com.backendless.Backendless;
-import com.backendless.service.MyAlarmReceiver;
+import com.backendless.async.callback.AsyncCallback;
+import com.backendless.exceptions.BackendlessFault;
 
 public class main_activity extends Activity {
 
@@ -23,6 +24,18 @@ public class main_activity extends Activity {
             Intent intent = new Intent(main_activity.this, choose_social_network_activity.class);
             startActivity(intent);
         }else{
+            Backendless.Messaging.registerDevice("308381610368", "default", new AsyncCallback<Void>() {
+                @Override
+                public void handleResponse(Void response) {
+                    Toast.makeText(getBaseContext(),"Registered", Toast.LENGTH_SHORT).show();
+                }
+
+                @Override
+                public void handleFault(BackendlessFault fault) {
+                    Toast.makeText(getBaseContext(),"fault: "+fault.getMessage(), Toast.LENGTH_SHORT).show();
+                }
+            });
+
             Intent intent = new Intent(main_activity.this, form_activity.class);
             startActivity(intent);
         }
