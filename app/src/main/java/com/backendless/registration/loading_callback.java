@@ -36,7 +36,7 @@ public class loading_callback<T> implements AsyncCallback<T>
      * @param context        context to which ProgressDialog should be attached
      * @param loadingMessage message to be shown on ProgressDialog
      */
-    public loading_callback( Context context, String loadingMessage )
+    loading_callback(Context context, String loadingMessage)
     {
         this.context = context;
         progressDialog = new ProgressDialog( context );
