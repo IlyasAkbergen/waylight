@@ -1,13 +1,10 @@
 package com.backendless.examples.login_with_sdk;
 
 import android.app.Activity;
-import android.app.AlarmManager;
-import android.app.PendingIntent;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.util.Log;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -16,12 +13,15 @@ import com.backendless.Backendless;
 import com.backendless.async.callback.AsyncCallback;
 import com.backendless.exceptions.BackendlessFault;
 import com.backendless.persistence.DataQueryBuilder;
-import com.backendless.service.MyAlarmReceiver;
 
 import java.util.List;
 
 public class saved_requests extends Activity {
     public String[] requests = {"empty"};
+    public String[] request_urls = {"empty"};
+    public String[] a = {"empty"};
+    public String[] b = {"empty"};
+    public String[] ids  = {"emepty"};
     private ListView lvRequests;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,8 +42,17 @@ public class saved_requests extends Activity {
             public void handleResponse( List<Request> list ){
                 if(list.size() > 0 ){
                     requests = new String[list.size()];
+                    request_urls = new String[list.size()];
+                    a = new String[list.size()];
+                    b = new String[list.size()];
+                    ids = new String[list.size()];
+                    requests = new String[list.size()];
                     for (int i=0; i<list.size(); i++) {
                         requests[i] = "From: "  + list.get(i).getPointa() + "  To: " + list.get(i).getPointb();
+                        request_urls[i] = list.get(i).getRequest_url();
+                        a[i] = list.get(i).getPointa();
+                        b[i] = list.get(i).getPointb();
+                        ids[i] = list.get(i).getObjectId();
                     }
 
                     startAdapter();
@@ -60,6 +69,25 @@ public class saved_requests extends Activity {
                 requests = new String[1];
                 requests[0] = "You have no saved request yet.";
                 startAdapter();
+            }
+        });
+
+        lvRequests.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            public void onItemClick(AdapterView<?> parent, View view,
+                                    int position, long id) {
+//                Log.d(LOG_TAG, "itemClick: position = " + position + ", id = "
+//                        + id);
+
+                Intent intent = new Intent(getBaseContext(), results_activity.class);
+                intent.putExtra("data", request_urls[position]);
+                intent.putExtra("pointa", a[position]);
+                intent.putExtra("pointb", b[position]);
+                intent.putExtra("user_id", Backendless.UserService.loggedInUser());
+                intent.putExtra("showDeleteBtn", "1");
+                intent.putExtra("objectID", ids[position]);
+
+                startActivity(intent);
+
             }
         });
     }

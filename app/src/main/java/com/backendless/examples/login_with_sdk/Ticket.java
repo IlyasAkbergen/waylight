@@ -1,7 +1,7 @@
 package com.backendless.examples.login_with_sdk;
 
 public class Ticket {
-    public String pointa, pointb, flightClass, departdate, returndate;
+    public String pointa, pointb, flightClass, departdate, returndate, request_url;
     public int price;
 
     public Ticket(){ }

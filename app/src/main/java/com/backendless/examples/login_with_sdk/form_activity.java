@@ -17,12 +17,9 @@ import com.android.volley.RequestQueue;
 import com.backendless.Backendless;
 import com.backendless.async.callback.AsyncCallback;
 import com.backendless.exceptions.BackendlessFault;
-import com.backendless.persistence.DataQueryBuilder;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.List;
-import java.util.Locale;
 
 public class form_activity extends Activity {
 
@@ -106,6 +103,7 @@ public class form_activity extends Activity {
                 intent.putExtra("pointa", pointa.getText().toString());
                 intent.putExtra("pointb", pointb.getText().toString());
                 intent.putExtra("user_id", Backendless.UserService.loggedInUser());
+                intent.putExtra("showDeleteBtn", "0");
 
                 startActivity(intent);
             }
@@ -207,168 +205,6 @@ public class form_activity extends Activity {
             }
         });
     }
-
-//    class RetrieveFeedTask extends AsyncTask<Void, Void, String> {
-//
-//        private Exception exception;
-//
-//        protected void onPreExecute() {
-//            progressBar.setVisibility(View.VISIBLE);
-//        }
-//
-//        protected String doInBackground(Void... params) {
-//            String data = "pointa=" + pointa.getText().toString() + "&pointb=" + pointb.getText().toString(); //data to post
-//            if(ticketClass != ""){
-//                data += "&class=" + ticketClass;
-//            }
-//            OutputStream out = null;
-//            try {
-//                URL url = new URL(baseUrl);// + "?pointa=" + pointa.getText().toString() + "&pointb=" + pointb.getText().toString()
-//                HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
-//                urlConnection.setRequestMethod("POST");
-//                try {
-//                    out = new BufferedOutputStream(urlConnection.getOutputStream());
-//
-//                    BufferedWriter writer = new BufferedWriter (new OutputStreamWriter(out, "UTF-8"));
-//
-//                    writer.write(data);
-//
-//                    writer.flush();
-//
-//                    writer.close();
-//
-//                    out.close();
-//
-//                    urlConnection.connect();
-//                    BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(urlConnection.getInputStream()));
-//                    StringBuilder stringBuilder = new StringBuilder();
-//                    for (String line = null; (line = bufferedReader.readLine()) != null;) {
-//                        stringBuilder.append(line).append("\n");
-//                    }
-//                    bufferedReader.close();
-//                    //JSONTokener tokener = new JSONTokener(stringBuilder.toString());
-//                    JSONObject jobject = new JSONObject(stringBuilder.toString());
-//                    JSONArray finalResult = jobject.getJSONArray("data" );
-//
-//                    for (int i = 0; i < finalResult.length(); i++) {
-//                        try {
-//                            JSONObject jsonObject = finalResult.getJSONObject(i);
-//                            Ticket ticket = new Ticket();
-//                            ticket.setPointa(jsonObject.getString("pointa"));
-//                            ticket.setPointb(jsonObject.getString("pointb"));
-//                            ticket.setDepartdate(jsonObject.getString("depart"));
-//                            ticket.setReturndate(jsonObject.getString("return"));
-//                            ticket.setFlightClass(jsonObject.getString("class"));
-//                            //                ticket.setYear(jsonObject.getInt("releaseYear"));
-//
-//                            ticketList.add(ticket);
-//                        } catch (JSONException e) {
-//                            e.printStackTrace();
-//                            //progressDialog.dismiss();
-//                        }
-//                    }
-//
-//                    return "";
-//                }
-//                finally{
-//                    urlConnection.disconnect();
-//                }
-//            }
-//            catch(Exception e) {
-//                Log.e("ERROR", e.getMessage(), e);
-//                return null;
-//            }
-//        }
-//
-//        protected void onPostExecute(String response) {
-//            if(response == null) {
-//                response = "THERE WAS AN ERROR";
-//            }
-//            progressBar.setVisibility(View.GONE);
-//            Log.i("INFO", response);
-//           // responseView.setText(response);
-           // TODO: check this.exception
-    // TODO: do something with the feed
-//
-////            try {
-////                JSONObject object = (JSONObject) new JSONTokener(response).nextValue();
-////                String requestID = object.getString("requestId");
-////                int likelihood = object.getInt("likelihood");
-////                JSONArray photos = object.getJSONArray("photos");
-////                .
-////                .
-////                .
-////                .
-////            } catch (JSONException e) {
-////                e.printStackTrace();
-////            }
-//        }
-//    }
-//
-////    private void sendRequest(){
-////        HttpClient client = new DefaultHttpClient();
-////        HttpPost post = new HttpPost(baseUrl);
-////
-////        List<NameValuePair> pairs = new ArrayList<NameValuePair>();
-////        pairs.add(new BasicNameValuePair("pointa", pointa.toString()));
-////        pairs.add(new BasicNameValuePair("pointb", pointb.toString()));
-////        try {
-////            post.setEntity(new UrlEncodedFormEntity(pairs));
-////        } catch (UnsupportedEncodingException e) {
-////            e.printStackTrace();
-////        }
-////
-////        try {
-////            HttpResponse response = client.execute(post);
-////            getTicketsList(response);
-////        } catch (IOException e) {
-////            e.printStackTrace();
-////        } catch (JSONException e) {
-////            e.printStackTrace();
-////        }
-////
-////        requestQueue = Volley.newRequestQueue(this);
-////
-////    }
-//
-//    private void getTicketsList(HttpResponse response) throws IOException, JSONException {
-//        BufferedReader reader = new BufferedReader(new InputStreamReader(response.getEntity().getContent(), "UTF-8"));
-//        StringBuilder builder = new StringBuilder();
-//        for (String line = null; (line = reader.readLine()) != null;) {
-//            builder.append(line).append("\n");
-//        }
-//        JSONTokener tokener = new JSONTokener(builder.toString());
-//        JSONArray finalResult = new JSONArray(tokener);
-//
-//        for (int i = 0; i < finalResult.length(); i++) {
-//            try {
-//                JSONObject jsonObject = finalResult.getJSONObject(i);
-//                Ticket ticket = new Ticket();
-//                ticket.setPointa(jsonObject.getString("pointa"));
-//                ticket.setPointb(jsonObject.getString("pointb"));
-//                ticket.setDepartdate(jsonObject.getString("depart"));
-//                ticket.setReturndate(jsonObject.getString("return"));
-//                ticket.setFlightClass(jsonObject.getString("class"));
-//                //                ticket.setYear(jsonObject.getInt("releaseYear"));
-//
-//                ticketList.add(ticket);
-//            } catch (JSONException e) {
-//                e.printStackTrace();
-//                //progressDialog.dismiss();
-//            }
-//        }
-//        adapter.notifyDataSetChanged();
-//       // progressDialog.dismiss();
-//
-////        If the JSON is actually a single line, then you can also remove the loop and builder.
-////
-////        HttpResponse response; // some response object
-////        BufferedReader reader = new BufferedReader(new InputStreamReader(response.getEntity().getContent(), "UTF-8"));
-////        String json = reader.readLine();
-////        JSONTokener tokener = new JSONTokener(json);
-////        JSONArray finalResult = new JSONArray(tokener);
-//
-//    }
 
     public void onRadioButtonClicked(View view) {
         boolean checked = ((RadioButton) view).isChecked();

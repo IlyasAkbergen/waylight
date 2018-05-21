@@ -10,16 +10,19 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+
+import com.backendless.Backendless;
+
 import org.json.JSONArray;
-import org.json.JSONObject;
 import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
-
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
@@ -27,6 +30,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class results_activity extends Activity{
     private List<Ticket> ticketList;
@@ -34,9 +38,10 @@ public class results_activity extends Activity{
     RecyclerView mList;
     private LinearLayoutManager linearLayoutManager;
     private DividerItemDecoration dividerItemDecoration;
-    String data, pointa, pointb, user_id;
+    String data, pointa, pointb, user_id, showDeleteBtn, objectID;
     ProgressBar progressBar ;
     String baseUrl = "http://singer.kz/waylight/public/api/tickets";
+    Button deleteBtn;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -59,9 +64,45 @@ public class results_activity extends Activity{
         pointa = getIntent().getStringExtra("pointa");
         pointb = getIntent().getStringExtra("pointb");
         user_id = getIntent().getStringExtra("user_id");
-        System.out.println("here" + data);
+        showDeleteBtn = getIntent().getStringExtra("showDeleteBtn");
+        objectID = getIntent().getStringExtra("objectID");
+        //System.out.println("here" + data);
+        this.deleteBtn = (Button) findViewById(R.id.deleteBtn);
         new RetrieveFeedTask().execute();
 
+        deleteBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // find object by id
+                deleteRequest();
+
+            }
+        });
+
+    }
+
+    private void deleteRequest() {
+        Backendless.initApp(getBaseContext(), getString( R.string.backendless_AppId), getString( R.string.backendless_ApiKey));
+
+        Map savedRequest = Backendless.Data.of( "Request" ).findById( objectID );
+
+        // delete this object
+        Backendless.Persistence.of( "Request" ).remove( savedRequest );
+
+//        Backendless.Persistence.remove( savedRequest, new AsyncCallback<Map>() {
+//
+//            @Override
+//            public void handleResponse(Map response) {
+//
+//            }
+//
+//            @Override
+//            public void handleFault( BackendlessFault fault )
+//            {
+//                // an error has occurred, the error code can be retrieved with fault.getCode()
+//            }
+//        } );
+//
     }
 
     class RetrieveFeedTask extends AsyncTask<Void, Void, String> {
@@ -119,7 +160,7 @@ public class results_activity extends Activity{
                         }
                     }
 
-                    if(finalResult.length() == 0){
+                    if(finalResult.length() == 0 && showDeleteBtn.equals("0")){
                         Intent intent = new Intent(getBaseContext(), save_request_activity.class);
                         intent.putExtra("data", data);
                         intent.putExtra("pointa", pointa);
@@ -145,89 +186,15 @@ public class results_activity extends Activity{
                 response = "THERE WAS AN ERROR";
             }
             progressBar.setVisibility(View.GONE);
+            if(showDeleteBtn.equals("1")){
+                deleteBtn.setVisibility(View.VISIBLE);
+            }
             adapter.notifyDataSetChanged();
             Log.i("INFO", response);
             // responseView.setText(response);
             // TODO: check this.exception
             // TODO: do something with the feed
 
-//            try {
-//                JSONObject object = (JSONObject) new JSONTokener(response).nextValue();
-//                String requestID = object.getString("requestId");
-//                int likelihood = object.getInt("likelihood");
-//                JSONArray photos = object.getJSONArray("photos");
-//                .
-//                .
-//                .
-//                .
-//            } catch (JSONException e) {
-//                e.printStackTrace();
-//            }
         }
     }
-
-//    private void sendRequest(){
-//        HttpClient client = new DefaultHttpClient();
-//        HttpPost post = new HttpPost(baseUrl);
-//
-//        List<NameValuePair> pairs = new ArrayList<NameValuePair>();
-//        pairs.add(new BasicNameValuePair("pointa", pointa.toString()));
-//        pairs.add(new BasicNameValuePair("pointb", pointb.toString()));
-//        try {
-//            post.setEntity(new UrlEncodedFormEntity(pairs));
-//        } catch (UnsupportedEncodingException e) {
-//            e.printStackTrace();
-//        }
-//
-//        try {
-//            HttpResponse response = client.execute(post);
-//            getTicketsList(response);
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        } catch (JSONException e) {
-//            e.printStackTrace();
-//        }
-//
-//        requestQueue = Volley.newRequestQueue(this);
-//
-//    }
-
-//    private void getTicketsList(HttpResponse response) throws IOException, JSONException {
-//        BufferedReader reader = new BufferedReader(new InputStreamReader(response.getEntity().getContent(), "UTF-8"));
-//        StringBuilder builder = new StringBuilder();
-//        for (String line = null; (line = reader.readLine()) != null;) {
-//            builder.append(line).append("\n");
-//        }
-//        JSONTokener tokener = new JSONTokener(builder.toString());
-//        JSONArray finalResult = new JSONArray(tokener);
-//
-//        for (int i = 0; i < finalResult.length(); i++) {
-//            try {
-//                JSONObject jsonObject = finalResult.getJSONObject(i);
-//                Ticket ticket = new Ticket();
-//                ticket.setPointa(jsonObject.getString("pointa"));
-//                ticket.setPointb(jsonObject.getString("pointb"));
-//                ticket.setDepartdate(jsonObject.getString("depart"));
-//                ticket.setReturndate(jsonObject.getString("return"));
-//                ticket.setFlightClass(jsonObject.getString("class"));
-//                //                ticket.setYear(jsonObject.getInt("releaseYear"));
-//
-//                ticketList.add(ticket);
-//            } catch (JSONException e) {
-//                e.printStackTrace();
-//                //progressDialog.dismiss();
-//            }
-//        }
-//        adapter.notifyDataSetChanged();
-        // progressDialog.dismiss();
-
-//        If the JSON is actually a single line, then you can also remove the loop and builder.
-//
-//        HttpResponse response; // some response object
-//        BufferedReader reader = new BufferedReader(new InputStreamReader(response.getEntity().getContent(), "UTF-8"));
-//        String json = reader.readLine();
-//        JSONTokener tokener = new JSONTokener(json);
-//        JSONArray finalResult = new JSONArray(tokener);
-
-//    }
 }

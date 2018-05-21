@@ -9,6 +9,11 @@ public class Request {
     private String ownerID;
     private Date departdate;
     private Date returndate;
+    private String objectId;
+
+    public String getObjectId(){ return objectId; }
+
+    public void setObjectId(String objectId) { this.objectId = objectId; }
 
     public String getRequest_url(){
         return request_url;

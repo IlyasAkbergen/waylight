@@ -113,4 +113,17 @@
         android:textColor="@color/sky">
 
     </Button>
+
+    <Button
+        android:visibility="gone"
+        android:id="@+id/deleteBtn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/rounded_dark"
+
+        android:text="Delete request"
+        android:textColor="@color/sky">
+
+    </Button>
+
 </LinearLayout>
