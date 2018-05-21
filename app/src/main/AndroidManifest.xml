@@ -108,7 +108,6 @@
 			android:noHistory="true" />
 		<activity android:name=".save_request_activity" />
 		<activity android:name=".saved_requests" />
-
 		<receiver
 			android:name="com.backendless.service.MyAlarmReceiver"
 			android:process=":remote" >
