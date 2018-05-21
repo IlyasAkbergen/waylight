@@ -21,23 +21,44 @@ public class main_activity extends Activity {
         Backendless.initApp(this, getString( R.string.backendless_AppId), getString( R.string.backendless_ApiKey));
 
         if(Backendless.UserService.loggedInUser() == ""){
+
             Intent intent = new Intent(main_activity.this, choose_social_network_activity.class);
             startActivity(intent);
+
         }else{
-            Backendless.Messaging.registerDevice("308381610368", "default", new AsyncCallback<Void>() {
-                @Override
-                public void handleResponse(Void response) {
-                    Toast.makeText(getBaseContext(),"Registered", Toast.LENGTH_SHORT).show();
-                }
+            try{
+                Backendless.Messaging.registerDevice("308381610368", "default", new AsyncCallback<Void>() {
+                    @Override
+                    public void handleResponse(Void response) {
+                        Toast.makeText(getBaseContext(),"Registered", Toast.LENGTH_SHORT).show();
+                    }
 
-                @Override
-                public void handleFault(BackendlessFault fault) {
-                    Toast.makeText(getBaseContext(),"fault: "+fault.getMessage(), Toast.LENGTH_SHORT).show();
-                }
-            });
+                    @Override
+                    public void handleFault(BackendlessFault fault) {
+                        Toast.makeText(getBaseContext(),"fault: "+fault.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                });
 
-            Intent intent = new Intent(main_activity.this, form_activity.class);
-            startActivity(intent);
+                Intent intent = new Intent(main_activity.this, form_activity.class);
+                startActivity(intent);
+            }catch (Exception e){
+
+                Toast.makeText(getBaseContext(),"fault: "+ e, Toast.LENGTH_SHORT).show();
+
+                Backendless.UserService.logout(new AsyncCallback<Void>() {
+                    @Override
+                    public void handleResponse(Void response) {
+                        Intent intent = new Intent(getBaseContext(), main_activity.class);
+                        startActivity(intent);
+                    }
+
+                    @Override
+                    public void handleFault(BackendlessFault fault) {
+                        Toast.makeText(getBaseContext(), "Logout Error", Toast.LENGTH_SHORT).show();
+                    }
+                });
+
+            }
         }
     }
 }

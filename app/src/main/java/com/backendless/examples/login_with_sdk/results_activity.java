@@ -49,8 +49,8 @@ public class results_activity extends Activity{
         setContentView(R.layout.activity_results);
         LinearLayout lay = (LinearLayout)findViewById(R.id.activity_results);
         lay.setBackgroundResource(R.drawable.background);
-        mList = findViewById(R.id.main_list);
         ticketList = new ArrayList<>();
+        mList = findViewById(R.id.main_list);
         adapter = new TicketAdapter(getApplicationContext(), ticketList);
         linearLayoutManager = new LinearLayoutManager(this);
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
