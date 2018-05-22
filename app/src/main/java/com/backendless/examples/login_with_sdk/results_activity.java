@@ -10,7 +10,6 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 
@@ -28,9 +27,10 @@ import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
+import java.util.Locale;
 
 public class results_activity extends Activity{
     private List<Ticket> ticketList;
@@ -38,10 +38,10 @@ public class results_activity extends Activity{
     RecyclerView mList;
     private LinearLayoutManager linearLayoutManager;
     private DividerItemDecoration dividerItemDecoration;
-    String data, pointa, pointb, user_id, showDeleteBtn, objectID;
+    String data, pointa, pointb, user_id, showDeleteBtn, objectID, returndate, departdate;
     ProgressBar progressBar ;
     String baseUrl = "http://singer.kz/waylight/public/api/tickets";
-    Button deleteBtn;
+   // Button deleteBtn;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -66,48 +66,44 @@ public class results_activity extends Activity{
         user_id = getIntent().getStringExtra("user_id");
         showDeleteBtn = getIntent().getStringExtra("showDeleteBtn");
         objectID = getIntent().getStringExtra("objectID");
+        departdate = getIntent().getStringExtra("departdate");
+        returndate = getIntent().getStringExtra("returndate");
         //System.out.println("here" + data);
-        this.deleteBtn = (Button) findViewById(R.id.deleteBtn);
+//        this.deleteBtn = (Button) findViewById(R.id.deleteBtn);
         new RetrieveFeedTask().execute();
 
-        deleteBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // find object by id
-                deleteRequest();
-
-            }
-        });
+//        deleteBtn.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                // find object by id
+//                deleteRequest();
+//
+//            }
+//        });
 
     }
 
     private void deleteRequest() {
         Backendless.initApp(getBaseContext(), getString( R.string.backendless_AppId), getString( R.string.backendless_ApiKey));
 
-        Map savedRequest = Backendless.Data.of( "Request" ).findById( objectID );
+        new Thread(new Runnable() {
+            public void run() {
+                // synchronous backendless API call here:
+                Backendless.Persistence.of( "Request" ).remove( Backendless.Data.of( "Request" ).findById( objectID ) );
+            }
+        }).start();
 
-        // delete this object
-        Backendless.Persistence.of( "Request" ).remove( savedRequest );
+//        finish();
 
-//        Backendless.Persistence.remove( savedRequest, new AsyncCallback<Map>() {
-//
-//            @Override
-//            public void handleResponse(Map response) {
-//
-//            }
-//
-//            @Override
-//            public void handleFault( BackendlessFault fault )
-//            {
-//                // an error has occurred, the error code can be retrieved with fault.getCode()
-//            }
-//        } );
-//
+        Intent intent = new Intent(getBaseContext(), saved_requests.class);
+        intent.putExtra("ownerId", Backendless.UserService.loggedInUser());
+        startActivity(intent);
     }
 
     class RetrieveFeedTask extends AsyncTask<Void, Void, String> {
 
         private Exception exception;
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.ENGLISH);
 
         protected void onPreExecute() {
             progressBar.setVisibility(View.VISIBLE);
@@ -142,25 +138,44 @@ public class results_activity extends Activity{
                     JSONObject jobject = new JSONObject(stringBuilder.toString());
                     JSONArray finalResult = jobject.getJSONArray("data" );
 
+                    boolean st1 = true, st2 = true;
+
                     for (int i = 0; i < finalResult.length(); i++) {
                         try {
                             JSONObject jsonObject = finalResult.getJSONObject(i);
-                            Ticket ticket = new Ticket();
-                            ticket.setPointa(jsonObject.getString("pointa"));
-                            ticket.setPointb(jsonObject.getString("pointb"));
-                            ticket.setDepartdate(jsonObject.getString("depart"));
-                            ticket.setReturndate(jsonObject.getString("return"));
-                            ticket.setFlightClass(jsonObject.getString("class"));
-                            ticket.setPrice(jsonObject.getInt("price"));
 
-                            ticketList.add(ticket);
+                            if( !departdate.equals("") ){
+                                if(!formatter.parse(jsonObject.getString("depart")).after(formatter.parse(departdate))){
+                                    st1 = false;
+                                    System.out.println("st1 = false");
+                                }
+                            }
+
+                            if( !returndate.equals("")){
+                                if(!formatter.parse(jsonObject.getString("return")).after(formatter.parse(returndate))){
+                                    st2 = false;
+                                    System.out.println("st2 = false");
+                                }
+                            }
+
+                            if( st1 && st2 ) {
+                                Ticket ticket = new Ticket();
+                                ticket.setPointa(jsonObject.getString("pointa"));
+                                ticket.setPointb(jsonObject.getString("pointb"));
+                                ticket.setDepartdate(jsonObject.getString("depart"));
+                                ticket.setReturndate(jsonObject.getString("return"));
+                                ticket.setFlightClass(jsonObject.getString("class"));
+                                ticket.setPrice(jsonObject.getInt("price"));
+                                ticketList.add(ticket);
+                            }
+
                         } catch (JSONException e) {
                             e.printStackTrace();
                             //progressDialog.dismiss();
                         }
                     }
 
-                    if(finalResult.length() == 0 && showDeleteBtn.equals("0")){
+                    if(ticketList.size() == 0 && showDeleteBtn.equals("0")){
                         Intent intent = new Intent(getBaseContext(), save_request_activity.class);
                         intent.putExtra("data", data);
                         intent.putExtra("pointa", pointa);
@@ -187,7 +202,7 @@ public class results_activity extends Activity{
             }
             progressBar.setVisibility(View.GONE);
             if(showDeleteBtn.equals("1")){
-                deleteBtn.setVisibility(View.VISIBLE);
+//                deleteBtn.setVisibility(View.VISIBLE);
             }
             adapter.notifyDataSetChanged();
             Log.i("INFO", response);

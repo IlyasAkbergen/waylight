@@ -9,17 +9,27 @@ public class Request {
     private String ownerID;
     private Date departdate;
     private Date returndate;
-    private String objectId;
+    public String objectId;
 
-    public String getObjectId()
-    {
-        return objectId;
+//    public String getObjectId()
+//    {
+//        return objectId;
+//    }
+
+//    public void setObjectId( String objectId )
+//    {
+//        this.objectId = objectId;
+//    }
+
+    public Date getDepartdate(){ return departdate; }
+
+    public void setDepartdate(Date departdate){ this.departdate = departdate; }
+
+    public Date getReturndate(){
+        return returndate;
     }
 
-    public void setObjectId( String objectId )
-    {
-        this.objectId = objectId;
-    }
+    public void setReturndate(Date returndate){ this.returndate = returndate; }
 
     public String getRequest_url(){
         return request_url;
@@ -47,13 +57,5 @@ public class Request {
 
     public String getOwnerID(){
         return ownerID;
-    }
-
-    public Date getDepartdate(){
-        return departdate;
-    }
-
-    public Date getReturndate(){
-        return returndate;
     }
 }

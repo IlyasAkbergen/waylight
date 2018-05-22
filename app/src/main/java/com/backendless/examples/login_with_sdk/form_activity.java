@@ -20,6 +20,7 @@ import com.backendless.exceptions.BackendlessFault;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Locale;
 
 public class form_activity extends Activity {
 
@@ -63,7 +64,7 @@ public class form_activity extends Activity {
                 myCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
                 // myCalendar.add(Calendar.DATE, 0);
                 String myFormat = "yyyy-MM-dd HH:mm:ss"; //In which you need put here
-                SimpleDateFormat sdf = new SimpleDateFormat(myFormat);
+                SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.ENGLISH);
                 departdate.setText(sdf.format(myCalendar.getTime()));
             }
 
@@ -104,6 +105,8 @@ public class form_activity extends Activity {
                 intent.putExtra("pointb", pointb.getText().toString());
                 intent.putExtra("user_id", Backendless.UserService.loggedInUser());
                 intent.putExtra("showDeleteBtn", "0");
+                intent.putExtra("departdate", departdate.getText().toString());
+                intent.putExtra("returndate", returndate.getText().toString());
 
                 startActivity(intent);
             }

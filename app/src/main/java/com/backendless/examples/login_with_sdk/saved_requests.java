@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -19,7 +20,6 @@ import com.backendless.exceptions.BackendlessFault;
 import com.backendless.persistence.DataQueryBuilder;
 
 import java.util.List;
-import java.util.Map;
 
 public class saved_requests extends Activity {
     public String[] requests = {"empty"};
@@ -28,16 +28,18 @@ public class saved_requests extends Activity {
     public String[] b = {"empty"};
     public String[] ids  = {"emepty"};
 
-    // recycler view
-    //private List<Request> requestList;
+// recycler view
+    private List<Request> requestList;
     private RecyclerView.Adapter adapter;
     RecyclerView mList;
     private LinearLayoutManager linearLayoutManager;
     private DividerItemDecoration dividerItemDecoration;
-
+    private ListView lvRequests;
+    private RecyclerViewClickListener listener;
     // recycler view
 
-    private ListView lvRequests;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -50,6 +52,11 @@ public class saved_requests extends Activity {
 
         // recycler view
 
+        run();
+
+    }
+
+    protected void run(){
         mList = findViewById(R.id.requests_list);
         linearLayoutManager = new LinearLayoutManager(this);
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
@@ -57,7 +64,7 @@ public class saved_requests extends Activity {
         mList.setHasFixedSize(true);
         mList.setLayoutManager(linearLayoutManager);
         mList.addItemDecoration(dividerItemDecoration);
-       // adapter = new RequestAdapter(getApplicationContext(), list);
+        // adapter = new RequestAdapter(getApplicationContext(), list);
 
         // recycler view
 
@@ -70,6 +77,7 @@ public class saved_requests extends Activity {
 
         Backendless.Persistence.of( Request.class ).find( queryBuilder, new AsyncCallback<List<Request>>(){
             public void handleResponse( List<Request> list ){
+                requestList = list;
                 if(list.size() > 0 ){
 //                    requests = new String[list.size()];
                     request_urls = new String[list.size()];
@@ -82,13 +90,10 @@ public class saved_requests extends Activity {
                         request_urls[i] = list.get(i).getRequest_url();
                         a[i] = list.get(i).getPointa();
                         b[i] = list.get(i).getPointb();
-                        ids[i] = list.get(i).getObjectId();
+                        ids[i] = list.get(i).objectId;
                     }
 
-
-
-
-                    RecyclerViewClickListener listener = (View view, int position) -> {
+                    listener = (View view, int position) -> {
 
                         PopupMenu popup = new PopupMenu(getBaseContext(), view);
 
@@ -101,10 +106,19 @@ public class saved_requests extends Activity {
                                     case R.id.request_delete:
 
                                         list.remove(position);
+                                        try{
+                                            new Thread(new Runnable() {
+                                                public void run() {
+                                                    // synchronous backendless API call here:
+                                                    Backendless.Persistence.of( "Request" ).remove( Backendless.Data.of( "Request" ).findById( ids[position] ) );
+                                                }
+                                            }).start();
+                                        }catch (Exception e){
 
-                                        Map savedRequest = Backendless.Data.of( "Request" ).findById( ids[position] );
-                                        Backendless.Persistence.of( "Request" ).remove( savedRequest );
-                                        adapter.notifyDataSetChanged();
+                                            //Toast.makeText(getBaseContext(), e.toString(), Toast.LENGTH_SHORT).show();
+                                            Log.d("DELETE_REQUEST", e.toString());
+                                        }
+                                        startAdapter();
                                         return true;
                                     case R.id.request_result:
                                         Intent intent = new Intent(getBaseContext(), results_activity.class);
@@ -115,6 +129,7 @@ public class saved_requests extends Activity {
                                         intent.putExtra("showDeleteBtn", "1");
                                         intent.putExtra("objectID", ids[position]);
                                         startActivity(intent);
+                                        adapter.notifyDataSetChanged();
                                         return true;
                                 }
                                 return false;
@@ -125,9 +140,9 @@ public class saved_requests extends Activity {
 
                     };
 
-                    adapter = new RequestAdapter(getApplicationContext(), list, listener);
-
-                    mList.setAdapter(adapter);
+//                    adapter = new RequestAdapter(getApplicationContext(), list, listener);
+//
+//                    mList.setAdapter(adapter);
                     startAdapter();
 
 
@@ -186,11 +201,18 @@ public class saved_requests extends Activity {
 //        });
     }
 
+    protected void onActivityResult(int requestCode, int resultCode, Intent data){
+        adapter.notifyDataSetChanged();
+    }
+
     public void startAdapter(){
 
         //ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, requests);
 
 //        lvRequests.setAdapter(adapter);
+        adapter = new RequestAdapter(getApplicationContext(), requestList, listener);
+
+        mList.setAdapter(adapter);
 
         adapter.notifyDataSetChanged();
 
