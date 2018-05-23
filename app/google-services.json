@@ -1,2 +1,46 @@
-Pleas, use this documentation to create correct 'google-services.json' for your google application.
-https://developers.google.com/identity/sign-in/android/start-integrating
+{
+  "project_info": {
+    "project_number": "308381610368",
+    "firebase_url": "https://skylight-1523524493011.firebaseio.com",
+    "project_id": "skylight-1523524493011",
+    "storage_bucket": "skylight-1523524493011.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:308381610368:android:04c054f66053fc97",
+        "android_client_info": {
+          "package_name": "com.backendless.examples.loginWithSdk"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "308381610368-4gnmfg3dkrb5pnil4grr53ln0q9bkr7l.apps.googleusercontent.com",
+          "client_type": 3
+        },
+        {
+          "client_id": "308381610368-744sbcv3n1aj9na2k79pivucbt4gmo30.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAO-PsOeJvcIj1kG_X8uPrFtaYZ2Ox5Fh8"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
