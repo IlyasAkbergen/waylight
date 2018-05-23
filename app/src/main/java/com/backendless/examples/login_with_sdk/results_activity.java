@@ -68,6 +68,9 @@ public class results_activity extends Activity{
         objectID = getIntent().getStringExtra("objectID");
         departdate = getIntent().getStringExtra("departdate");
         returndate = getIntent().getStringExtra("returndate");
+
+        System.out.println("### " + departdate  + " - " + returndate);
+
         //System.out.println("here" + data);
 //        this.deleteBtn = (Button) findViewById(R.id.deleteBtn);
         new RetrieveFeedTask().execute();
@@ -181,6 +184,8 @@ public class results_activity extends Activity{
                         intent.putExtra("pointa", pointa);
                         intent.putExtra("pointb", pointb);
                         intent.putExtra("user_id", user_id);
+                        intent.putExtra("departdate", departdate);
+                        intent.putExtra("returndate", returndate);
                         startActivity(intent);
                     }
 

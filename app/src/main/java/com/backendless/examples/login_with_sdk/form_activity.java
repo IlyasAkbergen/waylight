@@ -90,12 +90,12 @@ public class form_activity extends Activity {
                     data += "&class=" + ticketClass;
                 }
 
-                if(departdate.getText().toString().equals("")){
+                if(!departdate.getText().toString().equals("")){
                     data += "&depart=" + departdate.getText().toString();
                 }
 
 
-                if(returndate.getText().toString().equals("")){
+                if(!returndate.getText().toString().equals("")){
                     data += "&return=" + returndate.getText().toString();
                 }
 

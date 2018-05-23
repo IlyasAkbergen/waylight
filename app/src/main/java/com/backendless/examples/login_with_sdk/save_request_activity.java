@@ -1,32 +1,27 @@
 package com.backendless.examples.login_with_sdk;
 
 import android.app.Activity;
-import android.app.AlarmManager;
-import android.app.PendingIntent;
-import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.View;
 import android.widget.Button;
 import android.widget.RelativeLayout;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.backendless.Backendless;
-import com.backendless.Persistence;
 import com.backendless.async.callback.AsyncCallback;
 import com.backendless.exceptions.BackendlessFault;
-import com.backendless.service.MyAlarmReceiver;
 
-import java.util.Map;
+import java.text.SimpleDateFormat;
+import java.util.Locale;
 
 public class save_request_activity extends Activity{
     SharedPreferences sPref;
     String[] requests;
     Button saveBtn;
     String data, pointa, pointb, user_id;
+    String departdate, returndate;
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_save_request);
@@ -36,15 +31,38 @@ public class save_request_activity extends Activity{
         saveBtn.setOnClickListener(new View.OnClickListener() {
              @Override
              public void onClick(View v) {
+                 SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.ENGLISH);
                  data = getIntent().getStringExtra("data");
                  pointa = getIntent().getStringExtra("pointa");
                  pointb = getIntent().getStringExtra("pointb");
+                 departdate = getIntent().getStringExtra("departdate");
+                 returndate = getIntent().getStringExtra("returndate");
+//                 try {
+//                     departdate = formatter.parse(getIntent().getStringExtra("departdate"));
+//                 } catch (ParseException e) {
+//                     e.printStackTrace();
+//                 }
+//
+//                 try {
+//                     returndate = formatter.parse(getIntent().getStringExtra("returndate"));
+//                 } catch (ParseException e) {
+//                     e.printStackTrace();
+//                 }
+//
+//                 String myFormat = "yyyy-MM-dd HH:mm:ss"; //In which you need put here
+//                 departdate.setText(sdf.format(myCalendar.getTime()));
+
+//                 String string = "January 2, 2010";
+//                 DateFormat format = new SimpleDateFormat("MMMM d, yyyy", Locale.ENGLISH);
+//                 Date date = format.parse(string);
 
                  Request request = new Request();
                  request.setPointa( pointa );
                  request.setPointb( pointb );
-                 Intent intent = getIntent();
-                 request.setRequest_url( intent.getStringExtra("data") );
+                 request.setDepartdate(departdate);
+                 request.setReturndate(returndate);
+                 //Intent intent = getIntent();
+                 request.setRequest_url( data );
 
                  // save object synchronously
                  Backendless.initApp(getBaseContext(), getString( R.string.backendless_AppId), getString( R.string.backendless_ApiKey));
@@ -61,7 +79,8 @@ public class save_request_activity extends Activity{
 
                      public void handleFault( BackendlessFault fault )
                      {
-                         Toast.makeText(getBaseContext(), "Error.", Toast.LENGTH_SHORT ).show();
+                         Toast.makeText(getBaseContext(), "Error: ", Toast.LENGTH_SHORT ).show();
+                         System.out.println(" ***  " + fault);
                          // an error has occurred, the error code can be retrieved with fault.getCode()
                      }
                  });
@@ -69,21 +88,5 @@ public class save_request_activity extends Activity{
                  finish();
              }
         });
-    }
-
-    // Setup a recurring alarm every half hour
-    public void scheduleAlarm() {
-        // Construct an intent that will execute the AlarmReceiver
-        Intent intent = new Intent(getApplicationContext(), MyAlarmReceiver.class);
-        // Create a PendingIntent to be triggered when the alarm goes off
-        final PendingIntent pIntent = PendingIntent.getBroadcast(this, MyAlarmReceiver.REQUEST_CODE,
-                intent, PendingIntent.FLAG_UPDATE_CURRENT);
-        // Setup periodic alarm every every half hour from this point onwards
-        long firstMillis = System.currentTimeMillis(); // alarm is set right away
-        AlarmManager alarm = (AlarmManager) this.getSystemService(Context.ALARM_SERVICE);
-        // First parameter is the type: ELAPSED_REALTIME, ELAPSED_REALTIME_WAKEUP, RTC_WAKEUP
-        // Interval can be INTERVAL_FIFTEEN_MINUTES, INTERVAL_HALF_HOUR, INTERVAL_HOUR, INTERVAL_DAY
-        alarm.setInexactRepeating(AlarmManager.RTC_WAKEUP, firstMillis,
-                AlarmManager.INTERVAL_HALF_HOUR, pIntent);
     }
 }

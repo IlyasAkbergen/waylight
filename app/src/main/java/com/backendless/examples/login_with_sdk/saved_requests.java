@@ -19,7 +19,10 @@ import com.backendless.async.callback.AsyncCallback;
 import com.backendless.exceptions.BackendlessFault;
 import com.backendless.persistence.DataQueryBuilder;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.List;
+import java.util.Locale;
 
 public class saved_requests extends Activity {
     public String[] requests = {"empty"};
@@ -27,7 +30,8 @@ public class saved_requests extends Activity {
     public String[] a = {"empty"};
     public String[] b = {"empty"};
     public String[] ids  = {"emepty"};
-
+    public String[] departs = {"empty"};
+    public String[] returns = {"empty"};
 // recycler view
     private List<Request> requestList;
     private RecyclerView.Adapter adapter;
@@ -65,6 +69,7 @@ public class saved_requests extends Activity {
         mList.setLayoutManager(linearLayoutManager);
         mList.addItemDecoration(dividerItemDecoration);
         // adapter = new RequestAdapter(getApplicationContext(), list);
+        DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.ENGLISH);
 
         // recycler view
 
@@ -75,6 +80,8 @@ public class saved_requests extends Activity {
         DataQueryBuilder queryBuilder = DataQueryBuilder.create();
         queryBuilder.setWhereClause( whereClause );
 
+
+
         Backendless.Persistence.of( Request.class ).find( queryBuilder, new AsyncCallback<List<Request>>(){
             public void handleResponse( List<Request> list ){
                 requestList = list;
@@ -84,6 +91,8 @@ public class saved_requests extends Activity {
                     a = new String[list.size()];
                     b = new String[list.size()];
                     ids = new String[list.size()];
+                    departs = new String[list.size()];
+                    returns = new String[list.size()];
 //                    requests = new String[list.size()];
                     for (int i=0; i<list.size(); i++) {
 //                        requests[i] = "From: "  + list.get(i).getPointa() + "  To: " + list.get(i).getPointb();
@@ -91,6 +100,9 @@ public class saved_requests extends Activity {
                         a[i] = list.get(i).getPointa();
                         b[i] = list.get(i).getPointb();
                         ids[i] = list.get(i).objectId;
+                        departs[i] = list.get(i).getDepartdate();
+                        returns[i] = list.get(i).getReturndate();
+                        System.out.println(" 000 " + list.get(i).getDepartdate() + " - " + list.get(i).getReturndate());
                     }
 
                     listener = (View view, int position) -> {
@@ -121,6 +133,7 @@ public class saved_requests extends Activity {
                                         startAdapter();
                                         return true;
                                     case R.id.request_result:
+                                        System.out.println("--------------" + request_urls[position] + "--------------");
                                         Intent intent = new Intent(getBaseContext(), results_activity.class);
                                         intent.putExtra("data", request_urls[position]);
                                         intent.putExtra("pointa", a[position]);
@@ -128,7 +141,11 @@ public class saved_requests extends Activity {
                                         intent.putExtra("user_id", Backendless.UserService.loggedInUser());
                                         intent.putExtra("showDeleteBtn", "1");
                                         intent.putExtra("objectID", ids[position]);
-                                        startActivity(intent);
+                                        intent.putExtra("departdate", departs[position]);
+                                        intent.putExtra("departdate", "");
+                                        intent.putExtra("returndate", returns[position]);
+                                        intent.putExtra("returndate", "");
+                                    startActivity(intent);
                                         adapter.notifyDataSetChanged();
                                         return true;
                                 }
