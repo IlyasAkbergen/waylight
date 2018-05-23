@@ -1,7 +1,7 @@
 <resources>
-	<string name="app_name">waylight</string>
-	<string name="title_loginWithFacebookSDK">Login with Facebook SDK</string>
-	<string name="title_loginWithGooglePlusSDK">Login with GooglePlus SDK</string>
+	<string name="app_name">WayLight</string>
+	<string name="title_loginWithFacebookSDK">Login with Facebook</string>
+	<string name="title_loginWithGooglePlusSDK">Login with GooglePlus</string>
 
 	<string name="btn_LoginFacebook">Login in Facebook</string>
 	<string name="btn_LoginGooglePlus">Login in GooglePlus</string>
@@ -28,13 +28,88 @@
 
 	<!-- for Google -->
 	<!-- https://developers.google.com/identity/sign-in/android/start-integrating -->
-	<string name="gp_WebApp_ClientId">308381610368-744sbcv3n1aj9na2k79pivucbt4gmo30.apps.googleusercontent.com</string>
+	<string name="gp_WebApp_ClientId">308381610368–744sbcv3n1aj9na2k79pivucbt4gmo30.apps.googleusercontent.com</string>
 	<string name="gp_WebApp_ClientSecret">L0jP1SF2CpnYMpePVCw8tnho</string>
 
 	<!-- for Backendless -->
 	<string name="backendless_AppId">2706C788-67F7-1948-FF02-EF3069F0AA00</string>
 	<string name="backendless_ApiKey">1D912D94-23DF-8918-FF24-2FB7E43A6C00</string>
 	<string name="backendless_ApiHost">https://api.backendless.com</string>
+	<string name="from">From</string>
+	<string name="to">To</string>
+	<string name="search">Search</string>
+	<string name="departDate">Depart Date</string>
+	<string name="returnDate">Return Date</string>
+	<string name="adult">adult</string>
+	<string name="child">child</string>
+	<string name="economClass">econom class</string>
+	<string name="businessClass">business class</string>
+	<string name="returndate">return date</string>
+
 	<!-- __________ end __________ -->
 
+
+
+
+	<!-- activity names -->
+	<string name="activity_registration">Registration</string>
+	<string name="activity_login">Login</string>
+
+	<!-- text labels -->
+	<string name="label_name">Name:</string>
+	<string name="label_email">Email address:</string>
+	<string name="label_password">Password:</string>
+	<string name="label_password_confirm">Retype password:</string>
+
+	<!-- button labels -->
+	<string name="button_register">Register</string>
+	<string name="button_login">Login</string>
+	<string name="button_login_facebook">Login with Facebook</string>
+	<string name="button_login_twitter">Login with Twitter</string>
+
+	<!-- texts -->
+	<string name="register_prompt">Do not have an account? Register now</string>
+	<string name="divider_or">OR</string>
+	<string name="register_link">Register</string>
+
+	<!-- warnings -->
+	<string name="warning_name_empty">Name cannot be empty</string>
+	<string name="warning_name_lowercase">Name should start from an uppercase letter</string>
+	<string name="warning_email_empty">Email cannot be empty</string>
+	<string name="warning_email_invalid">Invalid email format</string>
+	<string name="warning_password_empty">Password cannot be empty</string>
+	<string name="warning_passwords_do_not_match">Passwords do not match</string>
+
+	<!-- info messages -->
+	<string name="info_registered_template">Registered. ObjectId: %s</string>
+	<string name="info_registered_success">Registered successfully</string>
+	<string name="info_logged_in">Logged in.</string>
+
+	<!-- loading messages -->
+	<string name="loading_empty">Loading</string>
+	<string name="loading_register">Sending registration request</string>
+	<string name="loading_login">Logging in</string>
+    <string name="waylight">WayLight</string>
+	<string name="logout">Log out</string>
+    <string name="no_result">There is no results for this request. You may save it and wait while there appeare any ticket.</string>
+    <string name="SAVED_REQUESTS">saved_requests</string>
+    <string name="my_saved_requests">My saved requests</string>
+
+	<!-- firebase -->
+	<string name="quickstart_message">Click the SUBSCRIBE TO NEWS button below to subscribe to the
+        news topic. Messages sent to the news topic will be received. The LOG TOKEN button logs the
+        InstanceID token to logcat.</string>
+	<string name="subscribe_to_news">Subscribe To News</string>
+	<string name="log_token">Log Token</string>
+
+	<string name="msg_subscribed">Subscribed to news topic</string>
+	<string name="msg_token_fmt" translatable="false">InstanceID Token: %s</string>
+
+	<string name="default_notification_channel_id" translatable="false">fcm_default_channel</string>
+	<!--
+        This is the name that users will see when interacting with this channel.
+        It should describe the category of notifications that will be sent through this channel
+     -->
+	<string name="default_notification_channel_name" translatable="true">News</string>
+	<!-- firebase -->
 </resources>

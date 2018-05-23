@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/activity_results"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="10dp">
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/main_list"
+        android:layout_width="371dp"
+        android:layout_height="wrap_content"
+        android:orientation="vertical" />
+
+    <LinearLayout  android:id="@+id/row1"
+        android:padding="10dp"
+        android:orientation="horizontal"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:background="#85ffffff">
+        <TextView
+            android:id="@+id/Pointa"
+            android:layout_width="178dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="start"
+            android:textColor="@color/dark"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/Pointb"
+            android:layout_width="182dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:textColor="@color/dark"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+    </LinearLayout>
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:indeterminate="true"
+        android:visibility="gone" />
+    <LinearLayout android:orientation="horizontal" android:id="@+id/row2"
+        android:background="#85ffffff"
+        android:padding="10dp"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent">
+        <TextView
+            android:id="@+id/Departdate"
+            android:layout_width="183dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="start"
+            android:layout_weight="1"
+
+            android:textColor="@color/dark"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/Returndate"
+            android:layout_width="184dp"
+            android:layout_height="wrap_content"
+            android:textColor="@color/dark"
+            android:textStyle="bold"
+            android:layout_gravity="end"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/row3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#85ffffff"
+        android:orientation="horizontal"
+        android:padding="10dp">
+
+        <TextView
+            android:id="@+id/textclass"
+            android:layout_width="184dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="start"
+            android:textColor="@color/dark"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/textprice"
+            android:layout_width="184dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:textColor="@color/dark"
+            android:textStyle="bold" />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/tvSave"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:text="@string/no_result"
+        android:visibility="gone"
+        >
+
+    </TextView>
+
+    <Button
+        android:visibility="gone"
+        android:id="@+id/saveBtn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/rounded_dark"
+        android:text="Save this request and monitor results"
+        android:textColor="@color/sky">
+
+    </Button>
+
+    <Button
+        android:visibility="gone"
+        android:id="@+id/deleteBtn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/rounded_dark"
+
+        android:text="Delete request"
+        android:textColor="@color/sky">
+
+    </Button>
+
+</LinearLayout>
